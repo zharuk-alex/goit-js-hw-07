@@ -7,7 +7,7 @@ formEl.addEventListener('submit', function (e) {
     node => node.nodeName === 'INPUT'
   );
 
-  const isValid = inputRefs.every(node => !!node.value);
+  const isValid = inputRefs.every(node => !!node.value.trim());
 
   if (!isValid) {
     return alert('All form fields must be filled in');
@@ -15,14 +15,15 @@ formEl.addEventListener('submit', function (e) {
 
   // not scalable solution
   // const formData = {
-  //   email: this.elements.email.value,
-  //   password: this.elements.password.value,
+  //   email: this.elements.email.value.trim(),
+  //   password: this.elements.password.value.trim(),
   // };
 
-  const formData = inputRefs.reduce(
-    (acc, node) => ({ ...acc, [node.name]: node.value }),
-    {}
-  );
+  const formData = inputRefs.reduce((acc, node) => {
+    const name = node.name.trim();
+    const value = node.value.trim();
+    return { ...acc, [name]: value };
+  }, {});
 
   console.log(formData);
   this.reset();
